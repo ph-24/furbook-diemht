@@ -1,11 +1,11 @@
 @extends('layouts.master')
 @section('header')
-    <a href="{{ url('/') }}">Back to overview</a>
+    <a href="{{ route('cat.index') }}">Back to overview</a>
     <h2>{{ $cat->name }}</h2>
-    {!! Form::open(['url' => 'cats/'.$cat->id.'/edit', 'method' => 'get']) !!}
+    {!! Form::open(['url' => route('cat.edit', $cat->id), 'method' => 'get']) !!}
         {!! Form::submit('Edit') !!}
     {!! Form::close() !!}
-    {!! Form::open(['url' => '/cats/'.$cat->id, 'method' => 'DELETE']) !!}
+    {!! Form::open(['url' => route('cat.destroy', $cat->id), 'method' => 'DELETE']) !!}
         {!! Form::submit('Delete') !!}
     {!! Form::close() !!}
     {{--<form action="/cats/{{ $cat->id }}" method="post" id="form_delete">--}}
