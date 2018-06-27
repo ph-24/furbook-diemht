@@ -39,12 +39,12 @@ class CatController extends Controller
     {
         $validator = $request->validate(
             [
-                'name' => 'required|255',
+                'name' => 'required|max:255',
                 'date_of_birth' => 'required|date_format:"Y/m/d"',
                 'breed_id' => 'required|numeric',
             ], [
                 'required' => 'Cột :attribute là bắt buộc',
-                'size' => 'Cột :attribute độ dài nhỏ hơn :size',
+                'max' => 'Cột :attribute độ dài nhỏ hơn :max',
                 'date_format' => 'Cột :attribute phải có format: Y/m/d',
                 'numeric' => 'Cột :attribute phải là kiểu số'
 
