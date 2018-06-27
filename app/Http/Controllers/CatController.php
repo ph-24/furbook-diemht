@@ -37,6 +37,24 @@ class CatController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = $request->validate(
+            [
+                'name' => 'required|255',
+                'date_of_birth' => 'required|date_format:"Y/m/d"',
+                'breed_id' => 'required|numeric',
+            ], [
+                'required' => 'Cột :attribute là bắt buộc',
+                'size' => 'Cột :attribute độ dài nhỏ hơn :size',
+                'date_format' => 'Cột :attribute phải có format: Y/m/d',
+                'numeric' => 'Cột :attribute phải là kiểu số'
+
+            ]
+        );
+        if ($validator->fails()) {
+            return redirect('post/create')
+                ->withErrors($validator)
+                ->withInput();
+        }
         $cat = Cat::create($request->all());
         return redirect()->route('cat.show', $cat->id)->with('cat', $cat)->withSuccess('Create cat successfully');
     }
