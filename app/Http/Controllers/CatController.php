@@ -4,6 +4,7 @@ namespace Furbook\Http\Controllers;
 
 use Furbook\Cat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CatController extends Controller
 {
@@ -37,7 +38,7 @@ class CatController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $request->validate(
+        $validator = Validator::make($request->all(),
             [
                 'name' => 'required|max:255',
                 'date_of_birth' => 'required|date_format:"Y/m/d"',
