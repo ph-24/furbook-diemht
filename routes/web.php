@@ -84,3 +84,7 @@ Route::get('/cats/breeds/{name}', function ($name) {
 //});
 Route::resource('cat', 'CatController');
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
