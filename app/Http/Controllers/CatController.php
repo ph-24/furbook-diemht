@@ -5,6 +5,7 @@ namespace Furbook\Http\Controllers;
 use Furbook\Cat;
 use Furbook\Http\Requests\CatRequest;
 use Illuminate\Http\Request;
+use Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CatController extends Controller
@@ -14,6 +15,12 @@ class CatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin')->only('destroy');
+    }
+
     public function index()
     {
         $cats = Cat::all();
@@ -80,9 +87,9 @@ class CatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Cat $cat)
     {
-        $cat = Cat::find($id);
+//        $cat = Cat::find($id);
         return view('cats.show')->with('cat', $cat);
     }
 
@@ -92,10 +99,20 @@ class CatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Cat $cat)
     {
-        $cat =Cat::find($id);
+        if(!Auth::user()->canEdit($cat)){
+            return redirect()
+                ->route('cat.index')
+                ->withError('Permission denied');
+        }
         return view('cats.edit')->with('cat', $cat);
+//        dd($cat);
+//        if (!Auth::user()->canEdit($cat)) {
+//            return redirect()->route('cat.index')->withErrors('Permisson denied');
+//        }
+////            $cat =Cat::find($id);
+//        return view('cats.edit')->with('cat', $cat);
     }
 
     /**
@@ -105,9 +122,9 @@ class CatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CatRequest $request, $id)
+    public function update(CatRequest $request, Cat $cat)
     {
-        $cat = Cat::find($id);
+//        $cat = Cat::find($id);
         $cat->update($request->all());
         return redirect()->route('cat.show', $cat->id)->with('cat', $cat)->withSuccess('Update cat successfully');
     }
@@ -118,9 +135,9 @@ class CatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Cat $cat)
     {
-        $cat = Cat::find($id);
+//        $cat = Cat::find($id);
         $cat->delete();
         return redirect()->route('cat.index')->withSuccess('Delete cat successfully');
     }

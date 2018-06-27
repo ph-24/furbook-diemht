@@ -10,11 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 use Illuminate\Support\Facades\Input;
+
 //DB::enableQueryLog()
 
 Route::get('/', function () {
-	//c1
+    //c1
     // return view('cats/show')->with('number',10);
 
     //c2
@@ -30,18 +32,11 @@ Route::get('/', function () {
 //    return view('cats/show',array('number' => 10));
     return redirect()->route('cat.index');
 });
-Route::get('/cats/breeds/{name}', function ($name) {
-    $breed = Furbook\Breed::with('cats')->where('name',$name)->first();
-    //dd($breed->cats);
-    return view('cats.index')->with('breed', $breed)->with('cats', $breed->cats);
-});
 //Route::get('/cats', function (){
 //    $cats = Furbook\Cat::all();
 //    //dd($cats[0]->breed);
 //    return view('cats/index')->with('cats', $cats);
 //});
-
-//
 ////Route::get('/cats/{cat}', function (Furbook\Cat $cat) {
 ////    dd($cat);
 ////    dd(DB::getQueryLog());
@@ -82,9 +77,11 @@ Route::get('/cats/breeds/{name}', function ($name) {
 //    $cat->delete();
 //    return redirect('cats/')->withSuccess('Delete cat successfully');
 //});
+Route::get('/cats/breeds/{name}', function ($name) {
+    $breed = Furbook\Breed::with('cats')->where('name', $name)->first();
+    //dd($breed->cats);
+    return view('cats.index')->with('breed', $breed)->with('cats', $breed->cats);
+});
 Route::resource('cat', 'CatController');
-
-
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');

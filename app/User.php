@@ -28,7 +28,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $cats = [
+    protected $casts = [
         //ep kieu du lieu
         'is_admin' => 'boolean',
     ];
@@ -37,18 +37,20 @@ class User extends Authenticatable
     {
         return $this->hasMany('Furbook\Cat');
     }
-     public function owns(Cat $cat)
-     {
-         return $this->id == $cat->id;
-     }
 
-     public function catEdit(Cat $cat)
-     {
-         return $this->is_admin || $this->owns($cat);
-     }
+    public function owns(Cat $cat)
+    {
+        return $this->id == $cat->id;
+    }
 
-     public function isAdministrator()
-     {
-         return $this->getAttribute('is_admin');
-     }
+    public function canEdit(Cat $cat)
+    {
+        return $this->is_admin || $this->owns($cat);
+    }
+
+    public function isAdministrator()
+    {
+        return $this->getAttribute('is_admin');
+    }
+
 }
