@@ -77,6 +77,8 @@ class CatController extends Controller
 //                ->withErrors($validator)
 //                ->withInput();
 //        }
+        $user_id = Auth::user()->id;
+        $request->request->add(['user_id' => $user_id]);
         $cat = Cat::create($request->all());
         return redirect()->route('cat.show', $cat->id)->with('cat', $cat)->withSuccess('Create cat successfully');
     }
